@@ -28,17 +28,23 @@
     "mac": {}
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "NODE_OPTIONS=--openssl-legacy-provider react-scripts start",
+    "build": "NODE_OPTIONS=--openssl-legacy-provider react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "electron": "wait-on http://localhost:3000 && electron .",
-    "electron-dev": "concurrently \"yarn run start\" \"yarn run electron\"",
-    "preelectron-pack": "yarn run build",
+    "electron-dev": "concurrently \"npm run start\" \"npm run electron\"",
+    "preelectron-pack": "npm run build",
     "electron-pack": "electron-builder"
   },
   "dependencies": {
-    "electron-serve": "^1.0.0"
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "electron-serve": "^1.0.0",
+    "express": "^4.18.3",
+    "mongoose": "^8.2.0",
+    "multer": "^1.4.5-lts.1",
+    "path": "^0.12.7"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^4.2.4",
