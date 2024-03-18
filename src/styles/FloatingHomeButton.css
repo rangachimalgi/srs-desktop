@@ -1,0 +1,24 @@
+.home-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 15px;
+    border-radius: 5px; /* More standard than a full circle for a button */
+    background-color: #007bff; /* Bootstrap primary color */
+    color: #ffffff;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+    z-index: 1000;
+  }
+  
+  .home-button:hover {
+    background-color: #0056b3; /* A darker shade for hover effect */
+  }
+  
+  .home-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+  
