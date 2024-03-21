@@ -1,75 +1,75 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import fs from "fs";
+import path from "path";
+
+const receiptsFilePath = path.join(__dirname, "receipts.json");
 
 const CreateReceipt = () => {
   let navigate = useNavigate();
   const [receipts, setReceipts] = useState([]);
-  const [formData, setFormData] = useState({
-    name: '',
-    phoneNumber: '',
-    // Add more fields as needed
-  });
 
-  const handleInputChange = (e) => {
+  useEffect(() => {
+    // Use IPC to load receipts
+    window.api.readReceipts().then((loadedReceipts) => {
+      setReceipts(loadedReceipts);
+    });
+  }, []);
+
+  const handleInputChange = (e, index) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
+    const updatedReceipts = [...receipts];
+    updatedReceipts[index] = { ...updatedReceipts[index], [name]: value };
+    setReceipts(updatedReceipts);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Here you would typically handle the form submission, and then...
-    // Add the new receipt to the list of receipts
-    setReceipts([...receipts, formData]);
-    // Reset the form data
-    setFormData({ name: '', phoneNumber: '' });
+  const handleAddReceipt = () => {
+    setReceipts([...receipts, { name: "", phoneNumber: "" }]);
+  };
+
+  const handleSaveReceipts = () => {
+    // Use IPC to save receipts
+    window.api.writeReceipts(receipts).then((wasSuccessful) => {
+      if (wasSuccessful) {
+        alert("Receipts saved!");
+      } else {
+        alert("Failed to save receipts.");
+      }
+    });
   };
 
   return (
     <div>
-      <h1>Create Receipt</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="name">Name:</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="phoneNumber">Phone Number:</label>
-          <input
-            type="tel"
-            id="phoneNumber"
-            name="phoneNumber"
-            value={formData.phoneNumber}
-            onChange={handleInputChange}
-          />
-        </div>
-        <button type="submit">Add Receipt</button>
-      </form>
+      {/* Your form and table as before */}
+      <button onClick={handleAddReceipt}>Add New Receipt</button>
+      <button onClick={handleSaveReceipts}>Save Receipts</button>
       <button onClick={() => navigate("/")}>Go Back</button>
-
-      {/* Render the table with the list of receipts */}
       <table>
         <thead>
           <tr>
             <th>Name</th>
             <th>Phone Number</th>
-            {/* Add more table headers as needed */}
           </tr>
         </thead>
         <tbody>
           {receipts.map((receipt, index) => (
             <tr key={index}>
-              <td>{receipt.name}</td>
-              <td>{receipt.phoneNumber}</td>
-              {/* Render additional receipt data here */}
+              <td>
+                <input
+                  type="text"
+                  name="name"
+                  value={receipt.name}
+                  onChange={(e) => handleInputChange(e, index)}
+                />
+              </td>
+              <td>
+                <input
+                  type="tel"
+                  name="phoneNumber"
+                  value={receipt.phoneNumber}
+                  onChange={(e) => handleInputChange(e, index)}
+                />
+              </td>
             </tr>
           ))}
         </tbody>

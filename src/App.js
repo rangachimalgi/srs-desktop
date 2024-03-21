@@ -16,6 +16,7 @@ import "./styles/Navigation.css";
 import CreateReceipt from "./pages/CreateReceipt.js";
 import DeleteReceipt from "./pages/DeleteReceipt.js";
 import DuplicateReceipt from "./pages/DuplicateReceipt.js";
+import UbhayamSevas from "./pages/UbhayamSevas.js";
 
 const App = () => {
   return (
@@ -38,6 +39,7 @@ const App = () => {
             element={<DuplicateReceipt />}
           />
           <Route path="/reports" element={<Reports />} />
+          <Route path="/reports/ubhayam-sevas" element={<UbhayamSevas />} />
         </Routes>
         <FloatingHomeButton />
       </div>
